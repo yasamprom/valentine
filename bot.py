@@ -30,7 +30,7 @@ async def process_start_command(message: types.Message, state: FSMContext):
 async def process_donate(message: types.Message):
     await message.answer("🍀🍀🍀\n"
                          "Приятно что тыкнули. Вот номер карты."
-                         ": \n2200 2404 6271 3468"
+                         ": \n2200 2404 6271 3468\n"
                          "Кстати, по вопросам и отзывам можно писать сюда @bryansk_sever111",
                          reply_markup=kb.main_kb)
 
