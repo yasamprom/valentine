@@ -32,7 +32,8 @@ async def process_start_command(message: types.Message, state: FSMContext):
     await state.set_state('waiting text')
     await state.update_data(stacy_id=message.get_args())
     if NOTIFICATION:  # Это мне просто чтобы посмотреть насколько народ пользуется ботом
-        await bot.send_message(1821744447, '@' + message.from_user.username)
+        await bot.send_message(1821744447, '@' + message.from_user.username
+                               + ' ' + str(message.from_user.id))
     await save_id(message.from_user.id)
 
 
