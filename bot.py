@@ -19,7 +19,8 @@ NOTIFICATION = 1
 @dp.message_handler(commands=['start'], state='*')
 async def process_start_command(message: types.Message, state: FSMContext):
     await message.answer("Напиши тут валентинку человеку, который опубликовал ссылку. "
-                         "Я отправлю ее анонимно.", reply_markup=kb.main_kb)
+                         "Я отправлю ее анонимно. Чтобы начать получчать валентинки нажми \"Хочу валентинки\"",
+                         reply_markup=kb.main_kb)
     # if NOTIFICATION:  # Это мне просто чтобы посмотреть насколько народ пользуется ботом
     #     await bot.send_message(1821744447, '+1 user')
     await state.set_state('waiting text')
