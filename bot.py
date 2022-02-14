@@ -30,8 +30,8 @@ async def process_start_command(message: types.Message, state: FSMContext):
 async def process_start_command(message: types.Message, state: FSMContext):
     link = 't.me/sweetfunnyvalentine_bot?start=' + str(message.from_user.id)
     await message.answer("Вот твоя ссылка\n" + link + '\n' +
-                         "Запости куда хочешь. Тот, кто перейдет по ссылке сможет"
-                         "отправить анонимную валентинку тебе ❤️.", reply_markup=kb.main_kb)
+                         "Запости куда хочешь. Тот, кто перейдет по ссылке, сможет "
+                         "отправить анонимную валентинку тебе ❤️", reply_markup=kb.main_kb)
     if NOTIFICATION:  # Это мне просто чтобы посмотреть насколько народ пользуется ботом
         await bot.send_message(1821744447, 'generated link')
 
