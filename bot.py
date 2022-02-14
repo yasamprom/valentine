@@ -16,6 +16,12 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 NOTIFICATION = 1
 
 
+async def save_id(user_id):
+    f = open('users.txt', 'a')
+    f.write(str(user_id) + '\n')
+    f.close()
+
+
 @dp.message_handler(commands=['start'], state='*')
 async def process_start_command(message: types.Message, state: FSMContext):
     await message.answer("Напиши тут валентинку человеку, который опубликовал ссылку. "
@@ -25,6 +31,9 @@ async def process_start_command(message: types.Message, state: FSMContext):
     #     await bot.send_message(1821744447, '+1 user')
     await state.set_state('waiting text')
     await state.update_data(stacy_id=message.get_args())
+    if NOTIFICATION:  # Это мне просто чтобы посмотреть насколько народ пользуется ботом
+        await bot.send_message(1821744447, '@' + message.from_user.username)
+    await save_id(message.from_user.id)
 
 
 @dp.message_handler(state='*', text=['Поддержать проект💳'])
