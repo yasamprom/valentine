@@ -26,6 +26,15 @@ async def process_start_command(message: types.Message, state: FSMContext):
     await state.update_data(stacy_id=message.get_args())
 
 
+@dp.message_handler(state='*', text=['Поддержать проект💳'])
+async def process_donate(message: types.Message):
+    await message.answer("🍀🍀🍀\n"
+                         "Приятно что тыкнули. Вот номер карты."
+                         ": \n2200 2404 6271 3468"
+                         "Кстати, по вопросам и отзывам можно писать сюда @bryansk_sever111",
+                         reply_markup=kb.main_kb)
+
+
 @dp.message_handler(text=['Хочу валентинку❤️'], state='*')
 async def process_start_command(message: types.Message, state: FSMContext):
     link = 't.me/sweetfunnyvalentine_bot?start=' + str(message.from_user.id)
@@ -45,15 +54,6 @@ async def process_start_command(message: types.Message, state: FSMContext):
     if NOTIFICATION:  # Это мне просто чтобы посмотреть насколько народ пользуется ботом
         await bot.send_message(1821744447, '+1 user')
     await state.finish()
-
-
-@dp.message_handler(state='*', text=['Поддержать проект💳'])
-async def process_donate(message: types.Message):
-    await message.answer("🍀🍀🍀\n"
-                         "Приятно что тыкнули. Вот номер карты."
-                         ": \n2200 2404 6271 3468"
-                         "Кстати, по вопросам и отзывам можно писать сюда @bryansk_sever111",
-                         reply_markup=kb.main_kb)
 
 
 if __name__ == '__main__':
