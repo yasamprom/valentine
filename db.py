@@ -20,7 +20,7 @@ async def add_user_to_db(user_id):
         'Access-Control-Request-Headers': '*',
         'api-key': DB_TOKEN
     }
-    response = requests.request("POST", url, headers=headers, data=data)
-    print(response.text)
+    requests.request("POST", url, headers=headers, data=data)
+
 
 
