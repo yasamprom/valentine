@@ -2,11 +2,12 @@ version: '3'
 
 services:
   valentine:
-    image: stepastrunkov/valentine
+    image: stepastrunkov/valentine:main
     environment:
       TOKEN: ${TOKEN}
-    watchtower:
-      image: containrrr/watchtower
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-      command: --interval 10
+      DB_TOKEN: ${DB_TOKEN}
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30
