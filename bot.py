@@ -14,12 +14,6 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
 
-async def save_id(user_id):
-    f = open('users.txt', 'a')
-    f.write(str(user_id) + '\n')
-    f.close()
-
-
 @dp.message_handler(commands=['start'], state='*')
 async def process_start_command(message: types.Message, state: FSMContext):
     target = message.from_user.username
@@ -28,8 +22,7 @@ async def process_start_command(message: types.Message, state: FSMContext):
                          reply_markup=kb.main_kb)
     await db.add_user_to_db(str(message.from_user.id) + ": " + message.from_user.username)
     await state.set_state('waiting text')
-    await state.update_data(stacy_id=message.get_args())
-    await save_id(message.from_user.id)
+    await state.update_data(target_id=message.get_args())
 
 
 @dp.message_handler(state='*', text=['Обратная связь'])
@@ -49,8 +42,8 @@ async def process_start_command(message: types.Message):
 @dp.message_handler(state='waiting text')
 async def process_start_command(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        stacy_id = data['stacy_id']
-        await bot.send_message(stacy_id, "Тебе что-то написали:\n" + message.text)
+        target_id = data['target_id']
+        await bot.send_message(target_id, "Тебе что-то написали:\n" + message.text)
     await message.answer("Ура, отправили валентинку!")
     await state.finish()
 
