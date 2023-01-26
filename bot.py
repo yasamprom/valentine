@@ -1,3 +1,4 @@
+import logging
 import os
 
 from aiogram import Bot, types
@@ -17,8 +18,8 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 @dp.message_handler(commands=['start'], state='*')
 async def process_start_command(message: types.Message, state: FSMContext):
     target = message.from_user.username
-    await message.answer("Напиши текст валентинки, она будет анонимно отправлена" + target +
-                         "Чтобы начать получать валентинки нажми \"Хочу валентинку\"",
+    await message.answer("Напиши текст валентинки, она будет анонимно отправлена @" + target +
+                         ".\nЧтобы тоже начать получать валентинки нажми \"Хочу валентинку\"",
                          reply_markup=kb.main_kb)
     await db.add_user_to_db(str(message.from_user.id) + ": " + message.from_user.username)
     await state.set_state('waiting text')
@@ -27,7 +28,7 @@ async def process_start_command(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state='*', text=['Обратная связь'])
 async def process_donate(message: types.Message):
-    await message.answer("По вопросам и отзывам можно писать сюда @bryansk_sever111",
+    await message.answer("По вопросам и отзывам можно писать @bryansk_sever111",
                          reply_markup=kb.main_kb)
 
 
@@ -39,11 +40,15 @@ async def process_start_command(message: types.Message):
                          "отправить анонимную валентинку тебе ❤️", reply_markup=kb.main_kb)
 
 
-@dp.message_handler(state='waiting text')
+@dp.message_handler(state='waiting text', content_types=['any'])
 async def process_start_command(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         target_id = data['target_id']
-        await bot.send_message(target_id, "Тебе что-то написали:\n" + message.text)
+        if len(message.photo) > 0:
+            await bot.send_message(target_id, "💕 Пришла валентинка 💕\n\n")
+            await bot.send_photo(target_id, message.photo[-1].file_id, caption=message.caption)
+        else:
+            await bot.send_message(target_id, "💕 Пришла валентинка 💕\n\n" + message.text)
     await message.answer("Ура, отправили валентинку!")
     await state.finish()
 

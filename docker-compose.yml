@@ -3,11 +3,13 @@ version: '3'
 services:
   valentine:
     image: stepastrunkov/valentine:main
+    restart: always
     environment:
       TOKEN: ${TOKEN}
       DB_TOKEN: ${DB_TOKEN}
   watchtower:
     image: containrrr/watchtower
+    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 30
