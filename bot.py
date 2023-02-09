@@ -21,7 +21,10 @@ async def process_start_command(message: types.Message, state: FSMContext):
     await message.answer("Напиши текст валентинки, она будет анонимно отправлена @" + target +
                          ".\nЧтобы тоже начать получать валентинки нажми \"Хочу валентинку\"",
                          reply_markup=kb.main_kb)
-    await db.add_user_to_db(str(message.from_user.id) + ": " + message.from_user.username)
+    id_record = str(message.from_user.id) + ": " + message.from_user.username
+    exists = await db.get_user_from_db(id_record)
+    if not exists:
+        await db.add_user_to_db(id_record)
     await state.set_state('waiting text')
     await state.update_data(target_id=message.get_args())
 
@@ -33,7 +36,7 @@ async def process_donate(message: types.Message):
 
 
 @dp.message_handler(text=['Хочу валентинку❤️'], state='*')
-async def process_start_command(message: types.Message):
+async def process_want(message: types.Message):
     link = 't.me/sweetfunnyvalentine_bot?start=' + str(message.from_user.id)
     await message.answer("Вот твоя ссылка\n" + link + '\n' +
                          "Запости куда хочешь. Тот, кто перейдет по ссылке, сможет "
@@ -41,7 +44,7 @@ async def process_start_command(message: types.Message):
 
 
 @dp.message_handler(state='waiting text', content_types=['any'])
-async def process_start_command(message: types.Message, state: FSMContext):
+async def process_valentine(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         target_id = data['target_id']
         if len(message.photo) > 0:
