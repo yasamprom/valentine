@@ -19,19 +19,18 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 async def process_start_command(message: types.Message, state: FSMContext):
     target = message.from_user.username
     await message.answer("Напиши текст валентинки, она будет анонимно отправлена @" + target +
-                         ".\nЧтобы тоже начать получать валентинки нажми \"Хочу валентинку\"",
+                         ".\n Анонимность гарантируется, код бота открыт. "
+                         "Чтобы тоже начать получать валентинки нажми \"Хочу валентинку\"",
                          reply_markup=kb.main_kb)
     id_record = str(message.from_user.id) + ": " + message.from_user.username
-    exists = await db.get_user_from_db(id_record)
-    if not exists:
-        await db.add_user_to_db(id_record)
+    await db.add_user_to_db(id_record, unique=True)
     await state.set_state('waiting text')
     await state.update_data(target_id=message.get_args())
 
 
 @dp.message_handler(state='*', text=['Обратная связь'])
 async def process_donate(message: types.Message):
-    await message.answer("По вопросам и отзывам можно писать @bryansk_sever111",
+    await message.answer("По вопросам, отзывам и пожеланиям можно писать @bryansk_sever111",
                          reply_markup=kb.main_kb)
 
 
@@ -52,6 +51,8 @@ async def process_valentine(message: types.Message, state: FSMContext):
             await bot.send_photo(target_id, message.photo[-1].file_id, caption=message.caption)
         else:
             await bot.send_message(target_id, "💕 Пришла валентинка 💕\n\n" + message.text)
+    id_record = str(message.from_user.id) + ": " + message.from_user.username
+    await db.add_valentine(user_id=id_record)
     await message.answer("Ура, отправили валентинку!")
     await state.finish()
 
