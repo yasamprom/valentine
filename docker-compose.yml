@@ -2,7 +2,7 @@ version: '3'
 
 services:
   valentine:
-    image: valentine #stepastrunkov/valentine:main
+    image: stepastrunkov/valentine:main
     restart: always
     environment:
       TOKEN: ${TOKEN}

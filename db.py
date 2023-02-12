@@ -11,6 +11,7 @@ async def add_user_to_db(user_id, unique=False):
         if x:
             return
     col.insert_one({"user_id": user_id})
+    client.close()
 
 
 async def add_valentine(user_id):
@@ -18,3 +19,4 @@ async def add_valentine(user_id):
     db = client["users"]
     col = db["valentines"]
     col.insert_one({"author": user_id})
+    client.close()
