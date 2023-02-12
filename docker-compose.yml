@@ -2,7 +2,7 @@ version: '3'
 
 services:
   valentine:
-    image: stepastrunkov/valentine:main
+    image: valentine #stepastrunkov/valentine:main
     restart: always
     environment:
       TOKEN: ${TOKEN}
@@ -15,11 +15,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 30
 
-  mongodb_container:
+  mongodb:
     image: mongo:latest
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: pass
     ports:
       - 27017:27017
     restart: always
