@@ -1,5 +1,4 @@
 import pymongo
-import logging
 
 
 async def add_user_to_db(user_id, unique=False):

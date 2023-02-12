@@ -17,7 +17,6 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 @dp.message_handler(commands=['start'], state='*')
 async def process_start_command(message: types.Message, state: FSMContext):
-    logging.warning("start com")
     data = message.get_args()
     if data == '':
         await message.answer("Привет, это бот для отправки валентинок. Чтобы сделать себе ссылку для "
