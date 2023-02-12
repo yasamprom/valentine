@@ -7,9 +7,19 @@ services:
     environment:
       TOKEN: ${TOKEN}
       DB_TOKEN: ${DB_TOKEN}
+
   watchtower:
     image: containrrr/watchtower
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 30
+
+  mongodb_container:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
+    ports:
+      - 27017:27017
+    restart: always
