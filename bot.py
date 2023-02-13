@@ -17,6 +17,8 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 
 @dp.message_handler(commands=['start'], state='*')
 async def process_start_command(message: types.Message, state: FSMContext):
+    id_record = str(message.from_user.id) + ": " + message.from_user.username
+    await db.add_user_to_db(id_record, unique=True)
     data = message.get_args()
     if data == '':
         await message.answer("Привет, это бот для отправки валентинок. Чтобы сделать себе ссылку для "
@@ -28,8 +30,6 @@ async def process_start_command(message: types.Message, state: FSMContext):
                          ".\nАнонимность гарантируется, код бота открыт. "
                          "Чтобы тоже начать получать валентинки нажми \"Хочу валентинку❤️\"",
                          reply_markup=kb.main_kb)
-    id_record = str(message.from_user.id) + ": " + message.from_user.username
-    await db.add_user_to_db(id_record, unique=True)
     await state.set_state('waiting text')
     await state.update_data(target_id=uid)
 
