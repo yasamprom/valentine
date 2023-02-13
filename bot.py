@@ -50,6 +50,8 @@ async def process_want(message: types.Message):
 
 @dp.message_handler(state='waiting text', content_types=['any'])
 async def process_valentine(message: types.Message, state: FSMContext):
+    id_record = str(message.from_user.id) + ": " + message.from_user.username
+    await db.add_valentine(user_id=id_record)
     async with state.proxy() as data:
         target_id = data['target_id']
         if len(message.photo) > 0:
@@ -57,8 +59,6 @@ async def process_valentine(message: types.Message, state: FSMContext):
             await bot.send_photo(target_id, message.photo[-1].file_id, caption=message.caption)
         else:
             await bot.send_message(target_id, "💕 Пришла валентинка 💕\n\n" + message.text)
-    id_record = str(message.from_user.id) + ": " + message.from_user.username
-    await db.add_valentine(user_id=id_record)
     await message.answer("Ура, отправили валентинку!")
     await state.finish()
 
